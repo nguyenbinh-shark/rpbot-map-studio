@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-label="RPBot Map Studio - offline SLAM analysis for Windows and Linux">
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#102338"/><stop offset="1" stop-color="#1a405a"/></linearGradient><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#80b3d6" stroke-opacity=".08"/></pattern></defs>
+  <rect width="1280" height="360" rx="24" fill="url(#bg)"/><rect width="1280" height="360" rx="24" fill="url(#grid)"/>
+  <text x="64" y="78" font-family="Arial,sans-serif" font-size="15" font-weight="bold" letter-spacing="3" fill="#62dbad">INSPECT · UNDERSTAND · EXPORT</text>
+  <text x="60" y="157" font-family="Arial,sans-serif" font-size="57" font-weight="bold" fill="#f2f7ff">RPBot Map Studio</text>
+  <text x="64" y="204" font-family="Arial,sans-serif" font-size="23" fill="#c4d8ea">From SLAM data to maps and clear reports.</text>
+  <text x="64" y="255" font-family="Arial,sans-serif" font-size="18" fill="#84bfff">Windows + Linux  /  Desktop + CLI  /  Fully offline</text>
+  <text x="64" y="303" font-family="Arial,sans-serif" font-size="15" fill="#a8bfd3">RTAB-Map · TUM · KITTI · CSV · g2o · PLY · PCD</text>
+  <g transform="translate(902 55)"><rect width="295" height="250" rx="18" fill="#0c1c2c" stroke="#385c77"/><path d="M25 185L80 175L79 107L144 108L174 61L235 43" fill="none" stroke="#57b4fa" stroke-width="6"/><path d="M25 185L144 108L235 43M80 175L174 61" fill="none" stroke="#62dbad" stroke-opacity=".4" stroke-dasharray="6 6"/><g fill="#e8f4ff" stroke="#246bdf" stroke-width="4"><circle cx="25" cy="185" r="9"/><circle cx="80" cy="175" r="9"/><circle cx="79" cy="107" r="9"/><circle cx="144" cy="108" r="9"/><circle cx="174" cy="61" r="9"/><circle cx="235" cy="43" r="10" fill="#62dbad"/></g><text x="24" y="229" font-family="Arial,sans-serif" font-size="13" fill="#a8bfd3">POSES → MAPS → INSIGHT</text></g>
+</svg>

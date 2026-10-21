@@ -1,0 +1,88 @@
+name: Build and test
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  desktop:
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            asset: windows-x86_64
+          - os: ubuntu-22.04
+            asset: linux-x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Linux desktop dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -qq && sudo apt-get install -y gcc python3-tk xvfb
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Build decoder and icon
+        run: python build_tools.py
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Generate synthetic inputs
+        run: python tools/generate_demo.py
+      - name: Package standalone desktop
+        run: python -m PyInstaller --noconfirm RPBotMapStudio.spec
+      - name: Linux packaged GUI and headless validation
+        if: runner.os == 'Linux'
+        run: |
+          xvfb-run -a dist/RPBotMapStudio --smoke --file examples/synthetic_rtabmap.db --output test-results/gui --smoke-report test-results/gui.json --quit-on-complete --mode full
+          python tools/check_smoke.py test-results/gui.json
+          env -u DISPLAY dist/RPBotMapStudio --analyze examples/synthetic_trajectory.tum --output test-results/cli --mode quick
+          python tools/verify_output.py test-results/cli --latest
+      - name: Windows packaged GUI and headless validation
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $studioProcess = Start-Process -FilePath dist/RPBotMapStudio.exe -ArgumentList '--smoke --file examples/synthetic_rtabmap.db --output test-results/gui --smoke-report test-results/gui.json --quit-on-complete --mode full' -PassThru -Wait
+          if ($studioProcess.ExitCode -ne 0) { throw 'GUI smoke process failed' }
+          python tools/check_smoke.py test-results/gui.json
+          $studioProcess = Start-Process -FilePath dist/RPBotMapStudio.exe -ArgumentList '--analyze examples/synthetic_trajectory.tum --output test-results/cli --mode quick' -PassThru -Wait
+          if ($studioProcess.ExitCode -ne 0) { throw 'Headless smoke process failed' }
+          python tools/verify_output.py test-results/cli --latest
+      - name: Package download archive
+        run: python tools/package_release.py --platform ${{ matrix.asset }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RPBotMapStudio-${{ matrix.asset }}
+          path: release/*
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validation-${{ matrix.asset }}
+          path: |
+            test-results/*.json
+            test-results/*.png
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: desktop
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: RPBotMapStudio-*
+          path: release
+          merge-multiple: true
+      - name: Publish release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1 || gh release create "${GITHUB_REF_NAME}" --verify-tag --title "RPBot Map Studio ${GITHUB_REF_NAME}" --generate-notes --repo "${GITHUB_REPOSITORY}"
+          gh release upload "${GITHUB_REF_NAME}" release/* --repo "${GITHUB_REPOSITORY}" --clobber

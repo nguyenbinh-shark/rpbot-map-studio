@@ -1,0 +1,28 @@
+name: Bug report
+description: Report a parsing, desktop or report problem
+body:
+  - type: input
+    id: version
+    attributes:
+      label: App version and OS
+      placeholder: v2.0.0 / Ubuntu 22.04 x86_64
+    validations:
+      required: true
+  - type: input
+    id: format
+    attributes:
+      label: Input format / originating SLAM tool
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps, expected result and actual result
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant error / minimal synthetic reproducer
+      description: Remove private paths, map layouts and camera content before sharing.
+      render: text
