@@ -25,6 +25,15 @@ The recording shows the actual Linux application loading a sample, running analy
 |---|---|
 | ![Chart browser](docs/media/windows-charts.png) | ![Linux desktop](docs/media/linux-overview.png) |
 
+<details>
+<summary>Offline 3D point-cloud viewer (synthetic RGB-D example)</summary>
+
+![Offline WebGL map viewer](docs/media/map-3d.png)
+
+Drag to orbit, scroll to zoom, Shift-drag to pan. The browser viewer uses local data and needs no server.
+
+</details>
+
 ## What you get
 
 - **Trajectory analysis:** XY/3D views, position, orientation, retained-pose path length, sampling intervals and finite-difference motion when timestamps exist.

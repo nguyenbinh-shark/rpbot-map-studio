@@ -11,6 +11,14 @@ from analysis import analyze, digest
 
 
 class ImportTests(unittest.TestCase):
+    def test_demo_generator_emits_readable_cross_platform_fixtures(self):
+        from tools.generate_demo import generate
+
+        generate(self.root)
+        self.assertEqual(len(trajectory(self.root / "synthetic_trajectory.tum", "tum").poses), 241)
+        self.assertEqual(len(pose_graph(self.root / "synthetic_graph.g2o").poses), 31)
+        self.assertEqual(len(point_cloud(self.root / "synthetic_room.ply", "ply").points), 30000)
+
     def test_big_endian_ply_with_rgb(self):
         p = self.root / "a.ply"
         p.write_bytes(

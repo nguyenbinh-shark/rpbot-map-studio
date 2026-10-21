@@ -4,7 +4,7 @@ This page separates data-analysis checks from desktop/platform evidence. Public 
 
 ## Regression suite
 
-`python -m unittest discover -s tests -v`: **28 tests**, covering Windows/Python 3.11 and Ubuntu 24.04/Python 3.12 locally, plus the CI matrix below.
+`python -m unittest discover -s tests -v`: **29 tests**, covering Windows/Python 3.11 and Ubuntu 24.04/Python 3.12 locally, plus the CI matrix below.
 
 Coverage includes bounded RVL/matrix decoding, malformed depth/calibration, SQLite WAL snapshots, cancellation, empty/pose-only databases, TUM timestamp/quaternion checks, KITTI rotation validation, explicit CSV orientation, g2o references/SE3 poses, PCD packed RGB, unsupported compression, PLY invalid points and end-to-end source-preserving reports.
 

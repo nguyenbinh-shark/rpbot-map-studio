@@ -23,7 +23,7 @@ def generate(folder):
         [4 * np.sin(phase), 3 * np.sin(phase) * np.cos(phase), 0.15 * np.sin(2 * phase)]
     )
     yaw = np.arctan2(np.gradient(xyz[:, 1]), np.gradient(xyz[:, 0]))
-    rot = Rotation.from_euler("z", yaw)
+    rot = Rotation.from_euler("z", yaw[:, None])
     p = np.concatenate([rot.as_matrix(), xyz[:, :, None]], axis=2)
     np.savetxt(
         folder / "synthetic_trajectory.tum",
