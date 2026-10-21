@@ -25,8 +25,13 @@ files = [
     (binary, binary.name),
     (root / "LICENSE", "LICENSE"),
     (root / "README.md", "README.md"),
-    (root / "docs/QUICKSTART.md", "QUICKSTART.md"),
 ]
+files.extend((root / name, name) for name in ["CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md"])
+files.extend(
+    (path, path.relative_to(root).as_posix())
+    for path in (root / "docs").rglob("*")
+    if path.is_file() and path.suffix.lower() in (".md", ".png", ".gif", ".svg")
+)
 files.extend(
     [
         (root / "THIRD_PARTY.md", "THIRD_PARTY.md"),
